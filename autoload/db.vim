@@ -377,9 +377,6 @@ function! s:init() abort
   let w:db = b:db.db_url
   setlocal nowrap nolist readonly nomodifiable nobuflisted bufhidden=delete
   let &l:statusline = substitute(&statusline, '%\([^[:alpha:]{!]\+\)[fFt]', '%\1{db#url#safe_format(b:db.db_url)}', '')
-  if empty(mapcheck('q', 'n'))
-    nnoremap <buffer><silent> q :echoerr "DB: q map has been replaced by gq"<CR>
-  endif
   if empty(maparg('gq', 'n'))
     exe 'nnoremap <buffer><silent>' (v:version < 704 ? '' : '<nowait>') 'gq :bdelete<CR>'
   endif
