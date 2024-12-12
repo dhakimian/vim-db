@@ -33,8 +33,14 @@ command! -bang -nargs=? -range=-1 -complete=custom,db#command_complete DB
       \ exe db#execute_command('<mods>', <bang>0, <line1>, <count>, substitute(<q-args>,
       \ '^[al]:\w\+\>\ze\s*\%($\|[^[:space:]=]\)', '\=eval(submatch(0))', ''))
 
-"TODO: completion on available schemas
-command! -nargs=1 DBuse call db#set_schema(<q-args>)
+function! s:get_schemas(A,L,P)
+  if exists('g:vim_dadbod_completion_loaded')
+    return join(keys(vim_dadbod_completion#get_cache().schemas), "\n")
+  else
+    return []
+  endif
+endfunction
+command! -nargs=1 -complete=custom,s:get_schemas DBuse call db#set_schema(<q-args>)
 
 function! s:manage_dbext() abort
   return get(b:, 'dadbod_manage_dbext', get(g:, 'dadbod_manage_dbext'))
