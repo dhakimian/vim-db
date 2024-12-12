@@ -612,6 +612,11 @@ function! db#op_exec(...) abort
   exe db#range(a:1)
 endfunction
 
+function! db#set_schema(schema) abort
+  let url = matchstr(s:canonicalize(s:resolve('')), '.*\/').a:schema
+  exe db#execute_command('<mods>', 0, 0, 0, 'w:db = '.url)
+endfunction
+
 let s:dbext_vars = ['type', 'profile', 'bin', 'user', 'passwd', 'dbname', 'srvname', 'host', 'port', 'dsnname', 'extra', 'integratedlogin', 'buffer_defaulted']
 function! db#clobber_dbext(...) abort
   let url = s:resolve(a:0 ? a:1 : '')
