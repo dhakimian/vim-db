@@ -34,11 +34,13 @@ command! -bang -nargs=? -range=-1 -complete=custom,db#command_complete DB
       \ '^[al]:\w\+\>\ze\s*\%($\|[^[:space:]=]\)', '\=eval(submatch(0))', ''))
 
 function! s:get_schemas(A,L,P)
+  let ret = ''
   if exists('g:vim_dadbod_completion_loaded')
-    return join(keys(vim_dadbod_completion#get_cache().schemas), "\n")
-  else
-    return []
+    try
+      let ret = join(keys(vim_dadbod_completion#get_cache().schemas), "\n")
+    endtry
   endif
+  return ret
 endfunction
 command! -nargs=1 -complete=custom,s:get_schemas DBuse call db#set_schema(<q-args>)
 
